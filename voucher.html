@@ -273,31 +273,54 @@
 
   </div>
 
-  <script>
+<script>
 
-    function claimVoucher(){
+  function claimVoucher(){
 
-      const vouchers = ["5%", "10%", "15%", "20%"];
+    const lastClaim =
+    localStorage.getItem("lastClaim");
 
-      const random =
-      vouchers[Math.floor(Math.random() * vouchers.length)];
+    const now = new Date().getTime();
 
-      document.getElementById("voucherResult").innerText =
-      random;
+    /* 24 HOURS */
 
-      document.getElementById("popup").style.display =
-      "flex";
+    const oneDay =
+    24 * 60 * 60 * 1000;
+
+    if(lastClaim && now - lastClaim < oneDay){
+
+      alert(
+        "You already claimed a voucher today. Please come back tomorrow."
+      );
+
+      return;
 
     }
 
-    function closePopup(){
+    const vouchers =
+    ["5%", "10%", "15%", "20%"];
 
-      document.getElementById("popup").style.display =
-      "none";
+    const random =
+    vouchers[Math.floor(Math.random() * vouchers.length)];
 
-    }
+    document.getElementById("voucherResult").innerText =
+    random;
 
-  </script>
+    document.getElementById("popup").style.display =
+    "flex";
+
+    localStorage.setItem("lastClaim", now);
+
+  }
+
+  function closePopup(){
+
+    document.getElementById("popup").style.display =
+    "none";
+
+  }
+
+</script>
 
 </body>
 </html>
