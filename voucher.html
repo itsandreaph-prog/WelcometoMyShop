@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Voucher Rewards</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:black;
+      color:white;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+      overflow:hidden;
+    }
+
+    .container{
+      width:100%;
+      max-width:1200px;
+      text-align:center;
+    }
+
+    h1{
+      color:gold;
+      font-size:55px;
+      margin-bottom:20px;
+    }
+
+    p{
+      color:#cccccc;
+      font-size:20px;
+      margin-bottom:50px;
+    }
+
+    /* VOUCHERS */
+
+    .voucher-box{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;
+      margin-bottom:40px;
+    }
+
+    .voucher{
+      background:#0d0d0d;
+      border:2px solid gold;
+      border-radius:25px;
+      padding:50px 20px;
+      box-shadow:0 0 20px rgba(255,215,0,0.2);
+      transition:0.3s;
+    }
+
+    .voucher:hover{
+      transform:translateY(-10px);
+      box-shadow:0 0 25px rgba(255,215,0,0.4);
+    }
+
+    .voucher h2{
+      color:gold;
+      font-size:55px;
+      margin-bottom:10px;
+    }
+
+    .voucher span{
+      color:white;
+      font-size:18px;
+    }
+
+    /* CLAIM BUTTON */
+
+    .claim-btn{
+      padding:18px 45px;
+      background:gold;
+      color:black;
+      border:none;
+      border-radius:14px;
+      font-size:20px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+      margin-top:10px;
+    }
+
+    .claim-btn:hover{
+      transform:scale(1.05);
+      box-shadow:0 0 20px rgba(255,215,0,0.4);
+    }
+
+    /* BACK BUTTON */
+
+    .back-home{
+      display:inline-block;
+      margin-top:25px;
+      color:gold;
+      text-decoration:none;
+      font-size:16px;
+    }
+
+    .back-home:hover{
+      text-decoration:underline;
+    }
+
+    /* POPUP */
+
+    .popup{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.8);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:1000;
+    }
+
+    .popup-content{
+      background:#111;
+      border:2px solid gold;
+      border-radius:25px;
+      padding:50px 30px;
+      text-align:center;
+      max-width:400px;
+      width:90%;
+      box-shadow:0 0 30px rgba(255,215,0,0.3);
+      animation:popup 0.3s ease;
+    }
+
+    .popup-content h3{
+      color:gold;
+      font-size:70px;
+      margin-bottom:15px;
+    }
+
+    .popup-content p{
+      color:#cccccc;
+      font-size:18px;
+      margin-bottom:30px;
+    }
+
+    .close-btn{
+      padding:14px 35px;
+      background:gold;
+      color:black;
+      border:none;
+      border-radius:12px;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .close-btn:hover{
+      transform:scale(1.05);
+    }
+
+    @keyframes popup{
+
+      from{
+        opacity:0;
+        transform:scale(0.8);
+      }
+
+      to{
+        opacity:1;
+        transform:scale(1);
+      }
+
+    }
+
+    /* MOBILE */
+
+    @media(max-width:768px){
+
+      h1{
+        font-size:40px;
+      }
+
+      p{
+        font-size:18px;
+      }
+
+      .voucher h2{
+        font-size:42px;
+      }
+
+      .popup-content h3{
+        font-size:55px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Voucher Rewards</h1>
+
+    <p>
+      Loyal customers can claim random discount vouchers
+      for their next order.
+    </p>
+
+    <div class="voucher-box">
+
+      <div class="voucher">
+        <h2>5%</h2>
+        <span>Voucher Discount</span>
+      </div>
+
+      <div class="voucher">
+        <h2>10%</h2>
+        <span>Voucher Discount</span>
+      </div>
+
+      <div class="voucher">
+        <h2>15%</h2>
+        <span>Voucher Discount</span>
+      </div>
+
+      <div class="voucher">
+        <h2>20%</h2>
+        <span>Voucher Discount</span>
+      </div>
+
+    </div>
+
+    <button class="claim-btn" onclick="claimVoucher()">
+      CLAIM
+    </button>
+
+    <br>
+
+    <a href="index.html" class="back-home">
+      ← Back to Home
+    </a>
+
+  </div>
+
+  <!-- POPUP -->
+
+  <div class="popup" id="popup">
+
+    <div class="popup-content">
+
+      <h3 id="voucherResult">10%</h3>
+
+      <p>
+        You successfully claimed a voucher discount.
+      </p>
+
+      <button class="close-btn" onclick="closePopup()">
+        CLOSE
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    function claimVoucher(){
+
+      const vouchers = ["5%", "10%", "15%", "20%"];
+
+      const random =
+      vouchers[Math.floor(Math.random() * vouchers.length)];
+
+      document.getElementById("voucherResult").innerText =
+      random;
+
+      document.getElementById("popup").style.display =
+      "flex";
+
+    }
+
+    function closePopup(){
+
+      document.getElementById("popup").style.display =
+      "none";
+
+    }
+
+  </script>
+
+</body>
+</html>
